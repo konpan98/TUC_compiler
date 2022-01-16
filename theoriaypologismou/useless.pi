@@ -1,0 +1,29 @@
+// File: useless.pi
+// A piece of Pi code for demonstration purposes
+
+const N = -100 int;
+
+var a, b int;
+var c = 5 int;
+var result bool;
+
+func cube(i int) int {
+ c= i;
+  return i*i*i;
+};
+   
+func add(n int, k int) int {
+  var j int;
+  j = (N-n) + cube(k);
+  writeInt(j);
+  return j;
+};
+
+/* Here you can see some useless lines.
+ * Just for testing the multi-line comments ...
+ */
+func begin() { 
+  a = readInt();
+  b = readInt();
+  add(a, b); // Here you can see some dummy comments!
+}

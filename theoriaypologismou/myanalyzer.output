@@ -1,0 +1,5631 @@
+Terminals unused in grammar
+
+    KW_NIL
+
+
+State 54 conflicts: 2 reduce/reduce
+State 212 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: begin $end
+
+    1 begin: %empty
+    2      | begin const_declaration ';'
+    3      | begin var_declaration ';'
+    4      | begin func_declaration ';'
+    5      | begin begin_func
+
+    6 begin_func: KW_FUNC KW_BEGIN '(' ')' func_body
+
+    7 var_declaration: KW_VAR declarations KW_INT
+    8                | KW_VAR declarations KW_REAL
+    9                | KW_VAR declarations KW_STRING
+   10                | KW_VAR declarations KW_BOOL
+
+   11 declarations: TK_ID
+   12             | declarations ',' TK_ID
+   13             | TK_ID '=' expr
+   14             | declarations ',' TK_ID '=' expr
+   15             | TK_ID '=' KW_TRUE
+   16             | declarations ',' TK_ID '=' KW_TRUE
+   17             | TK_ID '=' KW_FALSE
+   18             | declarations ',' TK_ID '=' KW_FALSE
+   19             | TK_ID '[' ']'
+   20             | TK_ID '[' expr ']'
+   21             | declarations ',' TK_ID '[' expr ']'
+
+   22 const_declaration: KW_CONST declarations KW_INT
+   23                  | KW_CONST declarations KW_REAL
+   24                  | KW_CONST declarations KW_STRING
+   25                  | KW_CONST declarations KW_BOOL
+
+   26 arrays_func: '[' ']' KW_INT
+   27            | '[' ']' KW_BOOL
+   28            | '[' ']' KW_REAL
+   29            | '[' ']' KW_STRING
+
+   30 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_INT func_body
+   31                 | KW_FUNC TK_ID '(' func_args ')' KW_BOOL func_body
+   32                 | KW_FUNC TK_ID '(' func_args ')' KW_REAL func_body
+   33                 | KW_FUNC TK_ID '(' func_args ')' KW_STRING func_body
+   34                 | KW_FUNC TK_ID '(' func_args ')' arrays_func func_body
+   35                 | KW_FUNC TK_ID '(' func_args ')' func_body
+
+   36 func_args: arg_decl
+   37          | func_args ',' arg_decl
+
+   38 arg_decl: %empty
+   39         | TK_ID KW_INT
+   40         | TK_ID KW_BOOL
+   41         | TK_ID KW_REAL
+   42         | TK_ID KW_STRING
+   43         | TK_ID arrays_func
+   44         | TK_ID
+   45         | expr
+
+   46 func_body: '{' code_body '}'
+
+   47 code_body: code
+   48          | code_body code
+
+   49 code: var_declaration ';'
+   50     | const_declaration ';'
+   51     | statements
+
+   52 expr: TK_ID
+   53     | TK_INT
+   54     | TK_FLOAT
+   55     | TK_STRING
+   56     | '(' expr ')'
+   57     | expr '+' expr
+   58     | expr '-' expr
+   59     | expr '*' expr
+   60     | expr '/' expr
+   61     | expr '%' expr
+   62     | KW_NOT expr
+   63     | expr KW_AND expr
+   64     | expr KW_OR expr
+   65     | expr TK_POWER expr
+   66     | '+' expr
+   67     | '-' expr
+   68     | expr TK_EQUAL expr
+   69     | expr TK_LESS expr
+   70     | expr '<' expr
+   71     | expr '>' expr
+   72     | expr TK_MORE expr
+   73     | expr TK_NOTEQUAL expr
+   74     | function_call
+   75     | array_assignment
+
+   76 statements: assignment
+   77           | if_statements
+   78           | for_statements
+   79           | while_statements
+   80           | KW_BREAK ';'
+   81           | KW_CONTINUE ';'
+   82           | return_stmt ';'
+   83           | function_call ';'
+
+   84 assignment: TK_ID '=' expr ';'
+   85           | array_assignment '=' expr ';'
+   86           | TK_ID '=' KW_FALSE ';'
+   87           | TK_ID '=' KW_TRUE ';'
+
+   88 array_assignment: TK_ID '[' expr ']'
+
+   89 if_statements: KW_IF '(' expr ')' statements_body
+   90              | KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+
+   91 statements_body: statements
+   92                | '{' statements_code '}' ';'
+
+   93 statements_code: %empty
+   94                | stmt_code
+
+   95 stmt_code: statements
+   96          | stmt_code statements
+
+   97 for_statements: KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+
+   98 for_assignment: TK_ID '=' expr
+
+   99 while_statements: KW_WHILE '(' expr ')' statements_body
+
+  100 return_stmt: %empty
+  101            | KW_RETURN
+  102            | KW_RETURN expr
+
+  103 function_call: TK_ID '(' func_args ')'
+  104              | pi_functions
+
+  105 pi_functions: TK_RDSTR '(' ')'
+  106             | TK_RDINT '(' ')'
+  107             | TK_RDREAL '(' ')'
+  108             | TK_WRTSTR '(' ')'
+  109             | TK_WRTSTR '(' TK_ID ')'
+  110             | TK_WRTSTR '(' TK_STRING ')'
+  111             | TK_WRTINT '(' ')'
+  112             | TK_WRTINT '(' TK_ID ')'
+  113             | TK_WRTINT '(' TK_INT ')'
+  114             | TK_WRTREAL '(' ')'
+  115             | TK_WRTREAL '(' TK_ID ')'
+  116             | TK_WRTREAL '(' TK_FLOAT ')'
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '%' (37) 61
+    '(' (40) 6 30 31 32 33 34 35 56 89 90 97 99 103 105 106 107 108 109 110 111 112 113 114 115 116
+    ')' (41) 6 30 31 32 33 34 35 56 89 90 97 99 103 105 106 107 108 109 110 111 112 113 114 115 116
+    '*' (42) 59
+    '+' (43) 57 66
+    ',' (44) 12 14 16 18 21 37
+    '-' (45) 58 67
+    '/' (47) 60
+    ';' (59) 2 3 4 49 50 80 81 82 83 84 85 86 87 92 97
+    '<' (60) 70
+    '=' (61) 13 14 15 16 17 18 84 85 86 87 98
+    '>' (62) 71
+    '[' (91) 19 20 21 26 27 28 29 88
+    ']' (93) 19 20 21 26 27 28 29 88
+    '{' (123) 46 92
+    '}' (125) 46 92
+    error (256)
+    TK_ID <str> (258) 11 12 13 14 15 16 17 18 19 20 21 30 31 32 33 34 35 39 40 41 42 43 44 52 84 86 87 88 98 103 109 112 115
+    TK_INT <str> (259) 53 113
+    TK_FLOAT <str> (260) 54 116
+    TK_STRING <str> (261) 55 110
+    KW_INT (262) 7 22 26 30 39
+    KW_FALSE <str> (263) 17 18 86
+    KW_FOR (264) 97
+    KW_NIL (265)
+    KW_BEGIN (266) 6
+    KW_REAL (267) 8 23 28 32 41
+    KW_VAR (268) 7 8 9 10
+    KW_WHILE (269) 99
+    KW_AND (270) 63
+    KW_STRING (271) 9 24 29 33 42
+    KW_CONST (272) 22 23 24 25
+    KW_BREAK (273) 80
+    KW_OR (274) 64
+    KW_BOOL (275) 10 25 27 31 40
+    KW_IF (276) 89 90
+    KW_CONTINUE (277) 81
+    KW_NOT (278) 62
+    KW_TRUE <str> (279) 15 16 87
+    KW_ELSE (280) 90
+    KW_FUNC (281) 6 30 31 32 33 34 35
+    KW_RETURN (282) 101 102
+    TK_POWER (283) 65
+    TK_EQUAL (284) 68
+    TK_NOTEQUAL (285) 73
+    TK_LESS (286) 69
+    TK_MORE (287) 72
+    TK_WRTSTR (288) 108 109 110
+    TK_WRTINT (289) 111 112 113
+    TK_WRTREAL (290) 114 115 116
+    TK_RDSTR (291) 105
+    TK_RDINT (292) 106
+    TK_RDREAL (293) 107
+
+
+Nonterminals, with rules where they appear
+
+    $accept (55)
+        on left: 0
+    begin (56)
+        on left: 1 2 3 4 5
+        on right: 0 2 3 4 5
+    begin_func <str> (57)
+        on left: 6
+        on right: 5
+    var_declaration <str> (58)
+        on left: 7 8 9 10
+        on right: 3 49
+    declarations <str> (59)
+        on left: 11 12 13 14 15 16 17 18 19 20 21
+        on right: 7 8 9 10 12 14 16 18 21 22 23 24 25
+    const_declaration <str> (60)
+        on left: 22 23 24 25
+        on right: 2 50
+    arrays_func <str> (61)
+        on left: 26 27 28 29
+        on right: 34 43
+    func_declaration <str> (62)
+        on left: 30 31 32 33 34 35
+        on right: 4
+    func_args <str> (63)
+        on left: 36 37
+        on right: 30 31 32 33 34 35 37 103
+    arg_decl <str> (64)
+        on left: 38 39 40 41 42 43 44 45
+        on right: 36 37
+    func_body <str> (65)
+        on left: 46
+        on right: 6 30 31 32 33 34 35
+    code_body <str> (66)
+        on left: 47 48
+        on right: 46 48
+    code <str> (67)
+        on left: 49 50 51
+        on right: 47 48
+    expr <str> (68)
+        on left: 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75
+        on right: 13 14 20 21 45 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 84 85 88 89 90 97 98 99 102
+    statements <str> (69)
+        on left: 76 77 78 79 80 81 82 83
+        on right: 51 91 95 96
+    assignment <str> (70)
+        on left: 84 85 86 87
+        on right: 76
+    array_assignment <str> (71)
+        on left: 88
+        on right: 75 85
+    if_statements <str> (72)
+        on left: 89 90
+        on right: 77
+    statements_body <str> (73)
+        on left: 91 92
+        on right: 89 90 97 99
+    statements_code <str> (74)
+        on left: 93 94
+        on right: 92
+    stmt_code <str> (75)
+        on left: 95 96
+        on right: 94 96
+    for_statements <str> (76)
+        on left: 97
+        on right: 78
+    for_assignment <str> (77)
+        on left: 98
+        on right: 97
+    while_statements <str> (78)
+        on left: 99
+        on right: 79
+    return_stmt <str> (79)
+        on left: 100 101 102
+        on right: 82
+    function_call <str> (80)
+        on left: 103 104
+        on right: 74 83
+    pi_functions <str> (81)
+        on left: 105 106 107 108 109 110 111 112 113 114 115 116
+        on right: 104
+
+
+State 0
+
+    0 $accept: . begin $end
+    1 begin: . %empty
+    2      | . begin const_declaration ';'
+    3      | . begin var_declaration ';'
+    4      | . begin func_declaration ';'
+    5      | . begin begin_func
+
+    $default  reduce using rule 1 (begin)
+
+    begin  go to state 1
+
+
+State 1
+
+    0 $accept: begin . $end
+    2 begin: begin . const_declaration ';'
+    3      | begin . var_declaration ';'
+    4      | begin . func_declaration ';'
+    5      | begin . begin_func
+    6 begin_func: . KW_FUNC KW_BEGIN '(' ')' func_body
+    7 var_declaration: . KW_VAR declarations KW_INT
+    8                | . KW_VAR declarations KW_REAL
+    9                | . KW_VAR declarations KW_STRING
+   10                | . KW_VAR declarations KW_BOOL
+   22 const_declaration: . KW_CONST declarations KW_INT
+   23                  | . KW_CONST declarations KW_REAL
+   24                  | . KW_CONST declarations KW_STRING
+   25                  | . KW_CONST declarations KW_BOOL
+   30 func_declaration: . KW_FUNC TK_ID '(' func_args ')' KW_INT func_body
+   31                 | . KW_FUNC TK_ID '(' func_args ')' KW_BOOL func_body
+   32                 | . KW_FUNC TK_ID '(' func_args ')' KW_REAL func_body
+   33                 | . KW_FUNC TK_ID '(' func_args ')' KW_STRING func_body
+   34                 | . KW_FUNC TK_ID '(' func_args ')' arrays_func func_body
+   35                 | . KW_FUNC TK_ID '(' func_args ')' func_body
+
+    $end      shift, and go to state 2
+    KW_VAR    shift, and go to state 3
+    KW_CONST  shift, and go to state 4
+    KW_FUNC   shift, and go to state 5
+
+    begin_func         go to state 6
+    var_declaration    go to state 7
+    const_declaration  go to state 8
+    func_declaration   go to state 9
+
+
+State 2
+
+    0 $accept: begin $end .
+
+    $default  accept
+
+
+State 3
+
+    7 var_declaration: KW_VAR . declarations KW_INT
+    8                | KW_VAR . declarations KW_REAL
+    9                | KW_VAR . declarations KW_STRING
+   10                | KW_VAR . declarations KW_BOOL
+   11 declarations: . TK_ID
+   12             | . declarations ',' TK_ID
+   13             | . TK_ID '=' expr
+   14             | . declarations ',' TK_ID '=' expr
+   15             | . TK_ID '=' KW_TRUE
+   16             | . declarations ',' TK_ID '=' KW_TRUE
+   17             | . TK_ID '=' KW_FALSE
+   18             | . declarations ',' TK_ID '=' KW_FALSE
+   19             | . TK_ID '[' ']'
+   20             | . TK_ID '[' expr ']'
+   21             | . declarations ',' TK_ID '[' expr ']'
+
+    TK_ID  shift, and go to state 10
+
+    declarations  go to state 11
+
+
+State 4
+
+   11 declarations: . TK_ID
+   12             | . declarations ',' TK_ID
+   13             | . TK_ID '=' expr
+   14             | . declarations ',' TK_ID '=' expr
+   15             | . TK_ID '=' KW_TRUE
+   16             | . declarations ',' TK_ID '=' KW_TRUE
+   17             | . TK_ID '=' KW_FALSE
+   18             | . declarations ',' TK_ID '=' KW_FALSE
+   19             | . TK_ID '[' ']'
+   20             | . TK_ID '[' expr ']'
+   21             | . declarations ',' TK_ID '[' expr ']'
+   22 const_declaration: KW_CONST . declarations KW_INT
+   23                  | KW_CONST . declarations KW_REAL
+   24                  | KW_CONST . declarations KW_STRING
+   25                  | KW_CONST . declarations KW_BOOL
+
+    TK_ID  shift, and go to state 10
+
+    declarations  go to state 12
+
+
+State 5
+
+    6 begin_func: KW_FUNC . KW_BEGIN '(' ')' func_body
+   30 func_declaration: KW_FUNC . TK_ID '(' func_args ')' KW_INT func_body
+   31                 | KW_FUNC . TK_ID '(' func_args ')' KW_BOOL func_body
+   32                 | KW_FUNC . TK_ID '(' func_args ')' KW_REAL func_body
+   33                 | KW_FUNC . TK_ID '(' func_args ')' KW_STRING func_body
+   34                 | KW_FUNC . TK_ID '(' func_args ')' arrays_func func_body
+   35                 | KW_FUNC . TK_ID '(' func_args ')' func_body
+
+    TK_ID     shift, and go to state 13
+    KW_BEGIN  shift, and go to state 14
+
+
+State 6
+
+    5 begin: begin begin_func .
+
+    $default  reduce using rule 5 (begin)
+
+
+State 7
+
+    3 begin: begin var_declaration . ';'
+
+    ';'  shift, and go to state 15
+
+
+State 8
+
+    2 begin: begin const_declaration . ';'
+
+    ';'  shift, and go to state 16
+
+
+State 9
+
+    4 begin: begin func_declaration . ';'
+
+    ';'  shift, and go to state 17
+
+
+State 10
+
+   11 declarations: TK_ID .  [KW_INT, KW_REAL, KW_STRING, KW_BOOL, ',']
+   13             | TK_ID . '=' expr
+   15             | TK_ID . '=' KW_TRUE
+   17             | TK_ID . '=' KW_FALSE
+   19             | TK_ID . '[' ']'
+   20             | TK_ID . '[' expr ']'
+
+    '='  shift, and go to state 18
+    '['  shift, and go to state 19
+
+    $default  reduce using rule 11 (declarations)
+
+
+State 11
+
+    7 var_declaration: KW_VAR declarations . KW_INT
+    8                | KW_VAR declarations . KW_REAL
+    9                | KW_VAR declarations . KW_STRING
+   10                | KW_VAR declarations . KW_BOOL
+   12 declarations: declarations . ',' TK_ID
+   14             | declarations . ',' TK_ID '=' expr
+   16             | declarations . ',' TK_ID '=' KW_TRUE
+   18             | declarations . ',' TK_ID '=' KW_FALSE
+   21             | declarations . ',' TK_ID '[' expr ']'
+
+    KW_INT     shift, and go to state 20
+    KW_REAL    shift, and go to state 21
+    KW_STRING  shift, and go to state 22
+    KW_BOOL    shift, and go to state 23
+    ','        shift, and go to state 24
+
+
+State 12
+
+   12 declarations: declarations . ',' TK_ID
+   14             | declarations . ',' TK_ID '=' expr
+   16             | declarations . ',' TK_ID '=' KW_TRUE
+   18             | declarations . ',' TK_ID '=' KW_FALSE
+   21             | declarations . ',' TK_ID '[' expr ']'
+   22 const_declaration: KW_CONST declarations . KW_INT
+   23                  | KW_CONST declarations . KW_REAL
+   24                  | KW_CONST declarations . KW_STRING
+   25                  | KW_CONST declarations . KW_BOOL
+
+    KW_INT     shift, and go to state 25
+    KW_REAL    shift, and go to state 26
+    KW_STRING  shift, and go to state 27
+    KW_BOOL    shift, and go to state 28
+    ','        shift, and go to state 24
+
+
+State 13
+
+   30 func_declaration: KW_FUNC TK_ID . '(' func_args ')' KW_INT func_body
+   31                 | KW_FUNC TK_ID . '(' func_args ')' KW_BOOL func_body
+   32                 | KW_FUNC TK_ID . '(' func_args ')' KW_REAL func_body
+   33                 | KW_FUNC TK_ID . '(' func_args ')' KW_STRING func_body
+   34                 | KW_FUNC TK_ID . '(' func_args ')' arrays_func func_body
+   35                 | KW_FUNC TK_ID . '(' func_args ')' func_body
+
+    '('  shift, and go to state 29
+
+
+State 14
+
+    6 begin_func: KW_FUNC KW_BEGIN . '(' ')' func_body
+
+    '('  shift, and go to state 30
+
+
+State 15
+
+    3 begin: begin var_declaration ';' .
+
+    $default  reduce using rule 3 (begin)
+
+
+State 16
+
+    2 begin: begin const_declaration ';' .
+
+    $default  reduce using rule 2 (begin)
+
+
+State 17
+
+    4 begin: begin func_declaration ';' .
+
+    $default  reduce using rule 4 (begin)
+
+
+State 18
+
+   13 declarations: TK_ID '=' . expr
+   15             | TK_ID '=' . KW_TRUE
+   17             | TK_ID '=' . KW_FALSE
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_FALSE    shift, and go to state 35
+    KW_NOT      shift, and go to state 36
+    KW_TRUE     shift, and go to state 37
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 47
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 19
+
+   19 declarations: TK_ID '[' . ']'
+   20             | TK_ID '[' . expr ']'
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+    ']'         shift, and go to state 51
+
+    expr              go to state 52
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 20
+
+    7 var_declaration: KW_VAR declarations KW_INT .
+
+    $default  reduce using rule 7 (var_declaration)
+
+
+State 21
+
+    8 var_declaration: KW_VAR declarations KW_REAL .
+
+    $default  reduce using rule 8 (var_declaration)
+
+
+State 22
+
+    9 var_declaration: KW_VAR declarations KW_STRING .
+
+    $default  reduce using rule 9 (var_declaration)
+
+
+State 23
+
+   10 var_declaration: KW_VAR declarations KW_BOOL .
+
+    $default  reduce using rule 10 (var_declaration)
+
+
+State 24
+
+   12 declarations: declarations ',' . TK_ID
+   14             | declarations ',' . TK_ID '=' expr
+   16             | declarations ',' . TK_ID '=' KW_TRUE
+   18             | declarations ',' . TK_ID '=' KW_FALSE
+   21             | declarations ',' . TK_ID '[' expr ']'
+
+    TK_ID  shift, and go to state 53
+
+
+State 25
+
+   22 const_declaration: KW_CONST declarations KW_INT .
+
+    $default  reduce using rule 22 (const_declaration)
+
+
+State 26
+
+   23 const_declaration: KW_CONST declarations KW_REAL .
+
+    $default  reduce using rule 23 (const_declaration)
+
+
+State 27
+
+   24 const_declaration: KW_CONST declarations KW_STRING .
+
+    $default  reduce using rule 24 (const_declaration)
+
+
+State 28
+
+   25 const_declaration: KW_CONST declarations KW_BOOL .
+
+    $default  reduce using rule 25 (const_declaration)
+
+
+State 29
+
+   30 func_declaration: KW_FUNC TK_ID '(' . func_args ')' KW_INT func_body
+   31                 | KW_FUNC TK_ID '(' . func_args ')' KW_BOOL func_body
+   32                 | KW_FUNC TK_ID '(' . func_args ')' KW_REAL func_body
+   33                 | KW_FUNC TK_ID '(' . func_args ')' KW_STRING func_body
+   34                 | KW_FUNC TK_ID '(' . func_args ')' arrays_func func_body
+   35                 | KW_FUNC TK_ID '(' . func_args ')' func_body
+   36 func_args: . arg_decl
+   37          | . func_args ',' arg_decl
+   38 arg_decl: . %empty  [')', ',']
+   39         | . TK_ID KW_INT
+   40         | . TK_ID KW_BOOL
+   41         | . TK_ID KW_REAL
+   42         | . TK_ID KW_STRING
+   43         | . TK_ID arrays_func
+   44         | . TK_ID
+   45         | . expr
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 54
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    $default  reduce using rule 38 (arg_decl)
+
+    func_args         go to state 55
+    arg_decl          go to state 56
+    expr              go to state 57
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 30
+
+    6 begin_func: KW_FUNC KW_BEGIN '(' . ')' func_body
+
+    ')'  shift, and go to state 58
+
+
+State 31
+
+   52 expr: TK_ID .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_POWER, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', '*', '/', '%', ';', ')', ',', ']']
+   88 array_assignment: TK_ID . '[' expr ']'
+  103 function_call: TK_ID . '(' func_args ')'
+
+    '('  shift, and go to state 59
+    '['  shift, and go to state 60
+
+    $default  reduce using rule 52 (expr)
+
+
+State 32
+
+   53 expr: TK_INT .
+
+    $default  reduce using rule 53 (expr)
+
+
+State 33
+
+   54 expr: TK_FLOAT .
+
+    $default  reduce using rule 54 (expr)
+
+
+State 34
+
+   55 expr: TK_STRING .
+
+    $default  reduce using rule 55 (expr)
+
+
+State 35
+
+   17 declarations: TK_ID '=' KW_FALSE .
+
+    $default  reduce using rule 17 (declarations)
+
+
+State 36
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   62     | KW_NOT . expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 61
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 37
+
+   15 declarations: TK_ID '=' KW_TRUE .
+
+    $default  reduce using rule 15 (declarations)
+
+
+State 38
+
+  108 pi_functions: TK_WRTSTR . '(' ')'
+  109             | TK_WRTSTR . '(' TK_ID ')'
+  110             | TK_WRTSTR . '(' TK_STRING ')'
+
+    '('  shift, and go to state 62
+
+
+State 39
+
+  111 pi_functions: TK_WRTINT . '(' ')'
+  112             | TK_WRTINT . '(' TK_ID ')'
+  113             | TK_WRTINT . '(' TK_INT ')'
+
+    '('  shift, and go to state 63
+
+
+State 40
+
+  114 pi_functions: TK_WRTREAL . '(' ')'
+  115             | TK_WRTREAL . '(' TK_ID ')'
+  116             | TK_WRTREAL . '(' TK_FLOAT ')'
+
+    '('  shift, and go to state 64
+
+
+State 41
+
+  105 pi_functions: TK_RDSTR . '(' ')'
+
+    '('  shift, and go to state 65
+
+
+State 42
+
+  106 pi_functions: TK_RDINT . '(' ')'
+
+    '('  shift, and go to state 66
+
+
+State 43
+
+  107 pi_functions: TK_RDREAL . '(' ')'
+
+    '('  shift, and go to state 67
+
+
+State 44
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   67     | '-' . expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 68
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 45
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   66     | '+' . expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 69
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 46
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   56     | '(' . expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 70
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 47
+
+   13 declarations: TK_ID '=' expr .  [KW_INT, KW_REAL, KW_STRING, KW_BOOL, ',']
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+
+    $default  reduce using rule 13 (declarations)
+
+
+State 48
+
+   75 expr: array_assignment .
+
+    $default  reduce using rule 75 (expr)
+
+
+State 49
+
+   74 expr: function_call .
+
+    $default  reduce using rule 74 (expr)
+
+
+State 50
+
+  104 function_call: pi_functions .
+
+    $default  reduce using rule 104 (function_call)
+
+
+State 51
+
+   19 declarations: TK_ID '[' ']' .
+
+    $default  reduce using rule 19 (declarations)
+
+
+State 52
+
+   20 declarations: TK_ID '[' expr . ']'
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ']'          shift, and go to state 85
+
+
+State 53
+
+   12 declarations: declarations ',' TK_ID .  [KW_INT, KW_REAL, KW_STRING, KW_BOOL, ',']
+   14             | declarations ',' TK_ID . '=' expr
+   16             | declarations ',' TK_ID . '=' KW_TRUE
+   18             | declarations ',' TK_ID . '=' KW_FALSE
+   21             | declarations ',' TK_ID . '[' expr ']'
+
+    '='  shift, and go to state 86
+    '['  shift, and go to state 87
+
+    $default  reduce using rule 12 (declarations)
+
+
+State 54
+
+   26 arrays_func: . '[' ']' KW_INT
+   27            | . '[' ']' KW_BOOL
+   28            | . '[' ']' KW_REAL
+   29            | . '[' ']' KW_STRING
+   39 arg_decl: TK_ID . KW_INT
+   40         | TK_ID . KW_BOOL
+   41         | TK_ID . KW_REAL
+   42         | TK_ID . KW_STRING
+   43         | TK_ID . arrays_func
+   44         | TK_ID .  [')', ',']
+   52 expr: TK_ID .  [KW_AND, KW_OR, TK_POWER, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', '*', '/', '%', ')', ',']
+   88 array_assignment: TK_ID . '[' expr ']'
+  103 function_call: TK_ID . '(' func_args ')'
+
+    KW_INT     shift, and go to state 88
+    KW_REAL    shift, and go to state 89
+    KW_STRING  shift, and go to state 90
+    KW_BOOL    shift, and go to state 91
+    '('        shift, and go to state 59
+    '['        shift, and go to state 92
+
+    ')'       reduce using rule 44 (arg_decl)
+    ')'       [reduce using rule 52 (expr)]
+    ','       reduce using rule 44 (arg_decl)
+    ','       [reduce using rule 52 (expr)]
+    $default  reduce using rule 52 (expr)
+
+    arrays_func  go to state 93
+
+
+State 55
+
+   30 func_declaration: KW_FUNC TK_ID '(' func_args . ')' KW_INT func_body
+   31                 | KW_FUNC TK_ID '(' func_args . ')' KW_BOOL func_body
+   32                 | KW_FUNC TK_ID '(' func_args . ')' KW_REAL func_body
+   33                 | KW_FUNC TK_ID '(' func_args . ')' KW_STRING func_body
+   34                 | KW_FUNC TK_ID '(' func_args . ')' arrays_func func_body
+   35                 | KW_FUNC TK_ID '(' func_args . ')' func_body
+   37 func_args: func_args . ',' arg_decl
+
+    ')'  shift, and go to state 94
+    ','  shift, and go to state 95
+
+
+State 56
+
+   36 func_args: arg_decl .
+
+    $default  reduce using rule 36 (func_args)
+
+
+State 57
+
+   45 arg_decl: expr .  [')', ',']
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+
+    $default  reduce using rule 45 (arg_decl)
+
+
+State 58
+
+    6 begin_func: KW_FUNC KW_BEGIN '(' ')' . func_body
+   46 func_body: . '{' code_body '}'
+
+    '{'  shift, and go to state 96
+
+    func_body  go to state 97
+
+
+State 59
+
+   36 func_args: . arg_decl
+   37          | . func_args ',' arg_decl
+   38 arg_decl: . %empty  [')', ',']
+   39         | . TK_ID KW_INT
+   40         | . TK_ID KW_BOOL
+   41         | . TK_ID KW_REAL
+   42         | . TK_ID KW_STRING
+   43         | . TK_ID arrays_func
+   44         | . TK_ID
+   45         | . expr
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  103              | TK_ID '(' . func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 54
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    $default  reduce using rule 38 (arg_decl)
+
+    func_args         go to state 98
+    arg_decl          go to state 56
+    expr              go to state 57
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 60
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+   88                 | TK_ID '[' . expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 99
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 61
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   62     | KW_NOT expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_POWER, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', '*', '/', '%', ';', ')', ',', ']']
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    $default  reduce using rule 62 (expr)
+
+    Conflict between rule 62 and token KW_AND resolved as reduce (KW_AND < KW_NOT).
+    Conflict between rule 62 and token KW_OR resolved as reduce (KW_OR < KW_NOT).
+    Conflict between rule 62 and token TK_POWER resolved as reduce (TK_POWER < KW_NOT).
+    Conflict between rule 62 and token TK_EQUAL resolved as reduce (TK_EQUAL < KW_NOT).
+    Conflict between rule 62 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < KW_NOT).
+    Conflict between rule 62 and token TK_LESS resolved as reduce (TK_LESS < KW_NOT).
+    Conflict between rule 62 and token TK_MORE resolved as reduce (TK_MORE < KW_NOT).
+    Conflict between rule 62 and token '<' resolved as reduce ('<' < KW_NOT).
+    Conflict between rule 62 and token '>' resolved as reduce ('>' < KW_NOT).
+    Conflict between rule 62 and token '-' resolved as reduce ('-' < KW_NOT).
+    Conflict between rule 62 and token '+' resolved as reduce ('+' < KW_NOT).
+    Conflict between rule 62 and token '*' resolved as reduce ('*' < KW_NOT).
+    Conflict between rule 62 and token '/' resolved as reduce ('/' < KW_NOT).
+    Conflict between rule 62 and token '%' resolved as reduce ('%' < KW_NOT).
+
+
+State 62
+
+  108 pi_functions: TK_WRTSTR '(' . ')'
+  109             | TK_WRTSTR '(' . TK_ID ')'
+  110             | TK_WRTSTR '(' . TK_STRING ')'
+
+    TK_ID      shift, and go to state 100
+    TK_STRING  shift, and go to state 101
+    ')'        shift, and go to state 102
+
+
+State 63
+
+  111 pi_functions: TK_WRTINT '(' . ')'
+  112             | TK_WRTINT '(' . TK_ID ')'
+  113             | TK_WRTINT '(' . TK_INT ')'
+
+    TK_ID   shift, and go to state 103
+    TK_INT  shift, and go to state 104
+    ')'     shift, and go to state 105
+
+
+State 64
+
+  114 pi_functions: TK_WRTREAL '(' . ')'
+  115             | TK_WRTREAL '(' . TK_ID ')'
+  116             | TK_WRTREAL '(' . TK_FLOAT ')'
+
+    TK_ID     shift, and go to state 106
+    TK_FLOAT  shift, and go to state 107
+    ')'       shift, and go to state 108
+
+
+State 65
+
+  105 pi_functions: TK_RDSTR '(' . ')'
+
+    ')'  shift, and go to state 109
+
+
+State 66
+
+  106 pi_functions: TK_RDINT '(' . ')'
+
+    ')'  shift, and go to state 110
+
+
+State 67
+
+  107 pi_functions: TK_RDREAL '(' . ')'
+
+    ')'  shift, and go to state 111
+
+
+State 68
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   67     | '-' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', ';', ')', ',', ']']
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 67 (expr)
+
+    Conflict between rule 67 and token KW_AND resolved as reduce (KW_AND < '-').
+    Conflict between rule 67 and token KW_OR resolved as reduce (KW_OR < '-').
+    Conflict between rule 67 and token TK_POWER resolved as shift ('-' < TK_POWER).
+    Conflict between rule 67 and token TK_EQUAL resolved as reduce (TK_EQUAL < '-').
+    Conflict between rule 67 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < '-').
+    Conflict between rule 67 and token TK_LESS resolved as reduce (TK_LESS < '-').
+    Conflict between rule 67 and token TK_MORE resolved as reduce (TK_MORE < '-').
+    Conflict between rule 67 and token '<' resolved as reduce ('<' < '-').
+    Conflict between rule 67 and token '>' resolved as reduce ('>' < '-').
+    Conflict between rule 67 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 67 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 67 and token '*' resolved as shift ('-' < '*').
+    Conflict between rule 67 and token '/' resolved as shift ('-' < '/').
+    Conflict between rule 67 and token '%' resolved as shift ('-' < '%').
+
+
+State 69
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   66     | '+' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', ';', ')', ',', ']']
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 66 (expr)
+
+    Conflict between rule 66 and token KW_AND resolved as reduce (KW_AND < '+').
+    Conflict between rule 66 and token KW_OR resolved as reduce (KW_OR < '+').
+    Conflict between rule 66 and token TK_POWER resolved as shift ('+' < TK_POWER).
+    Conflict between rule 66 and token TK_EQUAL resolved as reduce (TK_EQUAL < '+').
+    Conflict between rule 66 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < '+').
+    Conflict between rule 66 and token TK_LESS resolved as reduce (TK_LESS < '+').
+    Conflict between rule 66 and token TK_MORE resolved as reduce (TK_MORE < '+').
+    Conflict between rule 66 and token '<' resolved as reduce ('<' < '+').
+    Conflict between rule 66 and token '>' resolved as reduce ('>' < '+').
+    Conflict between rule 66 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 66 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 66 and token '*' resolved as shift ('+' < '*').
+    Conflict between rule 66 and token '/' resolved as shift ('+' < '/').
+    Conflict between rule 66 and token '%' resolved as shift ('+' < '%').
+
+
+State 70
+
+   56 expr: '(' expr . ')'
+   57     | expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ')'          shift, and go to state 112
+
+
+State 71
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   63     | expr KW_AND . expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 113
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 72
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   64     | expr KW_OR . expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 114
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 73
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   65     | expr TK_POWER . expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 115
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 74
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   68     | expr TK_EQUAL . expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 116
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 75
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   73     | expr TK_NOTEQUAL . expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 117
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 76
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   69     | expr TK_LESS . expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 118
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 77
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   72     | expr TK_MORE . expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 119
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 78
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   70     | expr '<' . expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 120
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 79
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   71     | expr '>' . expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 121
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 80
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   58     | expr '-' . expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 122
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 81
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   57     | expr '+' . expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 123
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 82
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   59     | expr '*' . expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 124
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 83
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   60     | expr '/' . expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 125
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 84
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   61     | expr '%' . expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 126
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 85
+
+   20 declarations: TK_ID '[' expr ']' .
+
+    $default  reduce using rule 20 (declarations)
+
+
+State 86
+
+   14 declarations: declarations ',' TK_ID '=' . expr
+   16             | declarations ',' TK_ID '=' . KW_TRUE
+   18             | declarations ',' TK_ID '=' . KW_FALSE
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_FALSE    shift, and go to state 127
+    KW_NOT      shift, and go to state 36
+    KW_TRUE     shift, and go to state 128
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 129
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 87
+
+   21 declarations: declarations ',' TK_ID '[' . expr ']'
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 130
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 88
+
+   39 arg_decl: TK_ID KW_INT .
+
+    $default  reduce using rule 39 (arg_decl)
+
+
+State 89
+
+   41 arg_decl: TK_ID KW_REAL .
+
+    $default  reduce using rule 41 (arg_decl)
+
+
+State 90
+
+   42 arg_decl: TK_ID KW_STRING .
+
+    $default  reduce using rule 42 (arg_decl)
+
+
+State 91
+
+   40 arg_decl: TK_ID KW_BOOL .
+
+    $default  reduce using rule 40 (arg_decl)
+
+
+State 92
+
+   26 arrays_func: '[' . ']' KW_INT
+   27            | '[' . ']' KW_BOOL
+   28            | '[' . ']' KW_REAL
+   29            | '[' . ']' KW_STRING
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+   88                 | TK_ID '[' . expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+    ']'         shift, and go to state 131
+
+    expr              go to state 99
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 93
+
+   43 arg_decl: TK_ID arrays_func .
+
+    $default  reduce using rule 43 (arg_decl)
+
+
+State 94
+
+   26 arrays_func: . '[' ']' KW_INT
+   27            | . '[' ']' KW_BOOL
+   28            | . '[' ']' KW_REAL
+   29            | . '[' ']' KW_STRING
+   30 func_declaration: KW_FUNC TK_ID '(' func_args ')' . KW_INT func_body
+   31                 | KW_FUNC TK_ID '(' func_args ')' . KW_BOOL func_body
+   32                 | KW_FUNC TK_ID '(' func_args ')' . KW_REAL func_body
+   33                 | KW_FUNC TK_ID '(' func_args ')' . KW_STRING func_body
+   34                 | KW_FUNC TK_ID '(' func_args ')' . arrays_func func_body
+   35                 | KW_FUNC TK_ID '(' func_args ')' . func_body
+   46 func_body: . '{' code_body '}'
+
+    KW_INT     shift, and go to state 132
+    KW_REAL    shift, and go to state 133
+    KW_STRING  shift, and go to state 134
+    KW_BOOL    shift, and go to state 135
+    '['        shift, and go to state 136
+    '{'        shift, and go to state 96
+
+    arrays_func  go to state 137
+    func_body    go to state 138
+
+
+State 95
+
+   37 func_args: func_args ',' . arg_decl
+   38 arg_decl: . %empty  [')', ',']
+   39         | . TK_ID KW_INT
+   40         | . TK_ID KW_BOOL
+   41         | . TK_ID KW_REAL
+   42         | . TK_ID KW_STRING
+   43         | . TK_ID arrays_func
+   44         | . TK_ID
+   45         | . expr
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 54
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    $default  reduce using rule 38 (arg_decl)
+
+    arg_decl          go to state 139
+    expr              go to state 57
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 96
+
+    7 var_declaration: . KW_VAR declarations KW_INT
+    8                | . KW_VAR declarations KW_REAL
+    9                | . KW_VAR declarations KW_STRING
+   10                | . KW_VAR declarations KW_BOOL
+   22 const_declaration: . KW_CONST declarations KW_INT
+   23                  | . KW_CONST declarations KW_REAL
+   24                  | . KW_CONST declarations KW_STRING
+   25                  | . KW_CONST declarations KW_BOOL
+   46 func_body: '{' . code_body '}'
+   47 code_body: . code
+   48          | . code_body code
+   49 code: . var_declaration ';'
+   50     | . const_declaration ';'
+   51     | . statements
+   76 statements: . assignment
+   77           | . if_statements
+   78           | . for_statements
+   79           | . while_statements
+   80           | . KW_BREAK ';'
+   81           | . KW_CONTINUE ';'
+   82           | . return_stmt ';'
+   83           | . function_call ';'
+   84 assignment: . TK_ID '=' expr ';'
+   85           | . array_assignment '=' expr ';'
+   86           | . TK_ID '=' KW_FALSE ';'
+   87           | . TK_ID '=' KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: . KW_IF '(' expr ')' statements_body
+   90              | . KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+   97 for_statements: . KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+   99 while_statements: . KW_WHILE '(' expr ')' statements_body
+  100 return_stmt: . %empty  [';']
+  101            | . KW_RETURN
+  102            | . KW_RETURN expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID        shift, and go to state 140
+    KW_FOR       shift, and go to state 141
+    KW_VAR       shift, and go to state 3
+    KW_WHILE     shift, and go to state 142
+    KW_CONST     shift, and go to state 4
+    KW_BREAK     shift, and go to state 143
+    KW_IF        shift, and go to state 144
+    KW_CONTINUE  shift, and go to state 145
+    KW_RETURN    shift, and go to state 146
+    TK_WRTSTR    shift, and go to state 38
+    TK_WRTINT    shift, and go to state 39
+    TK_WRTREAL   shift, and go to state 40
+    TK_RDSTR     shift, and go to state 41
+    TK_RDINT     shift, and go to state 42
+    TK_RDREAL    shift, and go to state 43
+
+    $default  reduce using rule 100 (return_stmt)
+
+    var_declaration    go to state 147
+    const_declaration  go to state 148
+    code_body          go to state 149
+    code               go to state 150
+    statements         go to state 151
+    assignment         go to state 152
+    array_assignment   go to state 153
+    if_statements      go to state 154
+    for_statements     go to state 155
+    while_statements   go to state 156
+    return_stmt        go to state 157
+    function_call      go to state 158
+    pi_functions       go to state 50
+
+
+State 97
+
+    6 begin_func: KW_FUNC KW_BEGIN '(' ')' func_body .
+
+    $default  reduce using rule 6 (begin_func)
+
+
+State 98
+
+   37 func_args: func_args . ',' arg_decl
+  103 function_call: TK_ID '(' func_args . ')'
+
+    ')'  shift, and go to state 159
+    ','  shift, and go to state 95
+
+
+State 99
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+   88 array_assignment: TK_ID '[' expr . ']'
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ']'          shift, and go to state 160
+
+
+State 100
+
+  109 pi_functions: TK_WRTSTR '(' TK_ID . ')'
+
+    ')'  shift, and go to state 161
+
+
+State 101
+
+  110 pi_functions: TK_WRTSTR '(' TK_STRING . ')'
+
+    ')'  shift, and go to state 162
+
+
+State 102
+
+  108 pi_functions: TK_WRTSTR '(' ')' .
+
+    $default  reduce using rule 108 (pi_functions)
+
+
+State 103
+
+  112 pi_functions: TK_WRTINT '(' TK_ID . ')'
+
+    ')'  shift, and go to state 163
+
+
+State 104
+
+  113 pi_functions: TK_WRTINT '(' TK_INT . ')'
+
+    ')'  shift, and go to state 164
+
+
+State 105
+
+  111 pi_functions: TK_WRTINT '(' ')' .
+
+    $default  reduce using rule 111 (pi_functions)
+
+
+State 106
+
+  115 pi_functions: TK_WRTREAL '(' TK_ID . ')'
+
+    ')'  shift, and go to state 165
+
+
+State 107
+
+  116 pi_functions: TK_WRTREAL '(' TK_FLOAT . ')'
+
+    ')'  shift, and go to state 166
+
+
+State 108
+
+  114 pi_functions: TK_WRTREAL '(' ')' .
+
+    $default  reduce using rule 114 (pi_functions)
+
+
+State 109
+
+  105 pi_functions: TK_RDSTR '(' ')' .
+
+    $default  reduce using rule 105 (pi_functions)
+
+
+State 110
+
+  106 pi_functions: TK_RDINT '(' ')' .
+
+    $default  reduce using rule 106 (pi_functions)
+
+
+State 111
+
+  107 pi_functions: TK_RDREAL '(' ')' .
+
+    $default  reduce using rule 107 (pi_functions)
+
+
+State 112
+
+   56 expr: '(' expr ')' .
+
+    $default  reduce using rule 56 (expr)
+
+
+State 113
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   63     | expr KW_AND expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, ';', ')', ',', ']']
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+
+    $default  reduce using rule 63 (expr)
+
+    Conflict between rule 63 and token KW_AND resolved as reduce (%left KW_AND).
+    Conflict between rule 63 and token KW_OR resolved as reduce (KW_OR < KW_AND).
+    Conflict between rule 63 and token TK_POWER resolved as shift (KW_AND < TK_POWER).
+    Conflict between rule 63 and token TK_EQUAL resolved as shift (KW_AND < TK_EQUAL).
+    Conflict between rule 63 and token TK_NOTEQUAL resolved as shift (KW_AND < TK_NOTEQUAL).
+    Conflict between rule 63 and token TK_LESS resolved as shift (KW_AND < TK_LESS).
+    Conflict between rule 63 and token TK_MORE resolved as shift (KW_AND < TK_MORE).
+    Conflict between rule 63 and token '<' resolved as shift (KW_AND < '<').
+    Conflict between rule 63 and token '>' resolved as shift (KW_AND < '>').
+    Conflict between rule 63 and token '-' resolved as shift (KW_AND < '-').
+    Conflict between rule 63 and token '+' resolved as shift (KW_AND < '+').
+    Conflict between rule 63 and token '*' resolved as shift (KW_AND < '*').
+    Conflict between rule 63 and token '/' resolved as shift (KW_AND < '/').
+    Conflict between rule 63 and token '%' resolved as shift (KW_AND < '%').
+
+
+State 114
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   64     | expr KW_OR expr .  [KW_INT, KW_REAL, KW_STRING, KW_OR, KW_BOOL, ';', ')', ',', ']']
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    KW_AND       shift, and go to state 71
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+
+    $default  reduce using rule 64 (expr)
+
+    Conflict between rule 64 and token KW_AND resolved as shift (KW_OR < KW_AND).
+    Conflict between rule 64 and token KW_OR resolved as reduce (%left KW_OR).
+    Conflict between rule 64 and token TK_POWER resolved as shift (KW_OR < TK_POWER).
+    Conflict between rule 64 and token TK_EQUAL resolved as shift (KW_OR < TK_EQUAL).
+    Conflict between rule 64 and token TK_NOTEQUAL resolved as shift (KW_OR < TK_NOTEQUAL).
+    Conflict between rule 64 and token TK_LESS resolved as shift (KW_OR < TK_LESS).
+    Conflict between rule 64 and token TK_MORE resolved as shift (KW_OR < TK_MORE).
+    Conflict between rule 64 and token '<' resolved as shift (KW_OR < '<').
+    Conflict between rule 64 and token '>' resolved as shift (KW_OR < '>').
+    Conflict between rule 64 and token '-' resolved as shift (KW_OR < '-').
+    Conflict between rule 64 and token '+' resolved as shift (KW_OR < '+').
+    Conflict between rule 64 and token '*' resolved as shift (KW_OR < '*').
+    Conflict between rule 64 and token '/' resolved as shift (KW_OR < '/').
+    Conflict between rule 64 and token '%' resolved as shift (KW_OR < '%').
+
+
+State 115
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   65     | expr TK_POWER expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', '*', '/', '%', ';', ')', ',', ']']
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+
+    $default  reduce using rule 65 (expr)
+
+    Conflict between rule 65 and token KW_AND resolved as reduce (KW_AND < TK_POWER).
+    Conflict between rule 65 and token KW_OR resolved as reduce (KW_OR < TK_POWER).
+    Conflict between rule 65 and token TK_POWER resolved as shift (%right TK_POWER).
+    Conflict between rule 65 and token TK_EQUAL resolved as reduce (TK_EQUAL < TK_POWER).
+    Conflict between rule 65 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < TK_POWER).
+    Conflict between rule 65 and token TK_LESS resolved as reduce (TK_LESS < TK_POWER).
+    Conflict between rule 65 and token TK_MORE resolved as reduce (TK_MORE < TK_POWER).
+    Conflict between rule 65 and token '<' resolved as reduce ('<' < TK_POWER).
+    Conflict between rule 65 and token '>' resolved as reduce ('>' < TK_POWER).
+    Conflict between rule 65 and token '-' resolved as reduce ('-' < TK_POWER).
+    Conflict between rule 65 and token '+' resolved as reduce ('+' < TK_POWER).
+    Conflict between rule 65 and token '*' resolved as reduce ('*' < TK_POWER).
+    Conflict between rule 65 and token '/' resolved as reduce ('/' < TK_POWER).
+    Conflict between rule 65 and token '%' resolved as reduce ('%' < TK_POWER).
+
+
+State 116
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   68     | expr TK_EQUAL expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', ';', ')', ',', ']']
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '-'       shift, and go to state 80
+    '+'       shift, and go to state 81
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 68 (expr)
+
+    Conflict between rule 68 and token KW_AND resolved as reduce (KW_AND < TK_EQUAL).
+    Conflict between rule 68 and token KW_OR resolved as reduce (KW_OR < TK_EQUAL).
+    Conflict between rule 68 and token TK_POWER resolved as shift (TK_EQUAL < TK_POWER).
+    Conflict between rule 68 and token TK_EQUAL resolved as reduce (%left TK_EQUAL).
+    Conflict between rule 68 and token TK_NOTEQUAL resolved as reduce (%left TK_NOTEQUAL).
+    Conflict between rule 68 and token TK_LESS resolved as reduce (%left TK_LESS).
+    Conflict between rule 68 and token TK_MORE resolved as reduce (%left TK_MORE).
+    Conflict between rule 68 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 68 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 68 and token '-' resolved as shift (TK_EQUAL < '-').
+    Conflict between rule 68 and token '+' resolved as shift (TK_EQUAL < '+').
+    Conflict between rule 68 and token '*' resolved as shift (TK_EQUAL < '*').
+    Conflict between rule 68 and token '/' resolved as shift (TK_EQUAL < '/').
+    Conflict between rule 68 and token '%' resolved as shift (TK_EQUAL < '%').
+
+
+State 117
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+   73     | expr TK_NOTEQUAL expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', ';', ')', ',', ']']
+
+    TK_POWER  shift, and go to state 73
+    '-'       shift, and go to state 80
+    '+'       shift, and go to state 81
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 73 (expr)
+
+    Conflict between rule 73 and token KW_AND resolved as reduce (KW_AND < TK_NOTEQUAL).
+    Conflict between rule 73 and token KW_OR resolved as reduce (KW_OR < TK_NOTEQUAL).
+    Conflict between rule 73 and token TK_POWER resolved as shift (TK_NOTEQUAL < TK_POWER).
+    Conflict between rule 73 and token TK_EQUAL resolved as reduce (%left TK_EQUAL).
+    Conflict between rule 73 and token TK_NOTEQUAL resolved as reduce (%left TK_NOTEQUAL).
+    Conflict between rule 73 and token TK_LESS resolved as reduce (%left TK_LESS).
+    Conflict between rule 73 and token TK_MORE resolved as reduce (%left TK_MORE).
+    Conflict between rule 73 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 73 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 73 and token '-' resolved as shift (TK_NOTEQUAL < '-').
+    Conflict between rule 73 and token '+' resolved as shift (TK_NOTEQUAL < '+').
+    Conflict between rule 73 and token '*' resolved as shift (TK_NOTEQUAL < '*').
+    Conflict between rule 73 and token '/' resolved as shift (TK_NOTEQUAL < '/').
+    Conflict between rule 73 and token '%' resolved as shift (TK_NOTEQUAL < '%').
+
+
+State 118
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   69     | expr TK_LESS expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', ';', ')', ',', ']']
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '-'       shift, and go to state 80
+    '+'       shift, and go to state 81
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 69 (expr)
+
+    Conflict between rule 69 and token KW_AND resolved as reduce (KW_AND < TK_LESS).
+    Conflict between rule 69 and token KW_OR resolved as reduce (KW_OR < TK_LESS).
+    Conflict between rule 69 and token TK_POWER resolved as shift (TK_LESS < TK_POWER).
+    Conflict between rule 69 and token TK_EQUAL resolved as reduce (%left TK_EQUAL).
+    Conflict between rule 69 and token TK_NOTEQUAL resolved as reduce (%left TK_NOTEQUAL).
+    Conflict between rule 69 and token TK_LESS resolved as reduce (%left TK_LESS).
+    Conflict between rule 69 and token TK_MORE resolved as reduce (%left TK_MORE).
+    Conflict between rule 69 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 69 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 69 and token '-' resolved as shift (TK_LESS < '-').
+    Conflict between rule 69 and token '+' resolved as shift (TK_LESS < '+').
+    Conflict between rule 69 and token '*' resolved as shift (TK_LESS < '*').
+    Conflict between rule 69 and token '/' resolved as shift (TK_LESS < '/').
+    Conflict between rule 69 and token '%' resolved as shift (TK_LESS < '%').
+
+
+State 119
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   72     | expr TK_MORE expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', ';', ')', ',', ']']
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '-'       shift, and go to state 80
+    '+'       shift, and go to state 81
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 72 (expr)
+
+    Conflict between rule 72 and token KW_AND resolved as reduce (KW_AND < TK_MORE).
+    Conflict between rule 72 and token KW_OR resolved as reduce (KW_OR < TK_MORE).
+    Conflict between rule 72 and token TK_POWER resolved as shift (TK_MORE < TK_POWER).
+    Conflict between rule 72 and token TK_EQUAL resolved as reduce (%left TK_EQUAL).
+    Conflict between rule 72 and token TK_NOTEQUAL resolved as reduce (%left TK_NOTEQUAL).
+    Conflict between rule 72 and token TK_LESS resolved as reduce (%left TK_LESS).
+    Conflict between rule 72 and token TK_MORE resolved as reduce (%left TK_MORE).
+    Conflict between rule 72 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 72 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 72 and token '-' resolved as shift (TK_MORE < '-').
+    Conflict between rule 72 and token '+' resolved as shift (TK_MORE < '+').
+    Conflict between rule 72 and token '*' resolved as shift (TK_MORE < '*').
+    Conflict between rule 72 and token '/' resolved as shift (TK_MORE < '/').
+    Conflict between rule 72 and token '%' resolved as shift (TK_MORE < '%').
+
+
+State 120
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   70     | expr '<' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', ';', ')', ',', ']']
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '-'       shift, and go to state 80
+    '+'       shift, and go to state 81
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 70 (expr)
+
+    Conflict between rule 70 and token KW_AND resolved as reduce (KW_AND < '<').
+    Conflict between rule 70 and token KW_OR resolved as reduce (KW_OR < '<').
+    Conflict between rule 70 and token TK_POWER resolved as shift ('<' < TK_POWER).
+    Conflict between rule 70 and token TK_EQUAL resolved as reduce (%left TK_EQUAL).
+    Conflict between rule 70 and token TK_NOTEQUAL resolved as reduce (%left TK_NOTEQUAL).
+    Conflict between rule 70 and token TK_LESS resolved as reduce (%left TK_LESS).
+    Conflict between rule 70 and token TK_MORE resolved as reduce (%left TK_MORE).
+    Conflict between rule 70 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 70 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 70 and token '-' resolved as shift ('<' < '-').
+    Conflict between rule 70 and token '+' resolved as shift ('<' < '+').
+    Conflict between rule 70 and token '*' resolved as shift ('<' < '*').
+    Conflict between rule 70 and token '/' resolved as shift ('<' < '/').
+    Conflict between rule 70 and token '%' resolved as shift ('<' < '%').
+
+
+State 121
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   71     | expr '>' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', ';', ')', ',', ']']
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '-'       shift, and go to state 80
+    '+'       shift, and go to state 81
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 71 (expr)
+
+    Conflict between rule 71 and token KW_AND resolved as reduce (KW_AND < '>').
+    Conflict between rule 71 and token KW_OR resolved as reduce (KW_OR < '>').
+    Conflict between rule 71 and token TK_POWER resolved as shift ('>' < TK_POWER).
+    Conflict between rule 71 and token TK_EQUAL resolved as reduce (%left TK_EQUAL).
+    Conflict between rule 71 and token TK_NOTEQUAL resolved as reduce (%left TK_NOTEQUAL).
+    Conflict between rule 71 and token TK_LESS resolved as reduce (%left TK_LESS).
+    Conflict between rule 71 and token TK_MORE resolved as reduce (%left TK_MORE).
+    Conflict between rule 71 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 71 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 71 and token '-' resolved as shift ('>' < '-').
+    Conflict between rule 71 and token '+' resolved as shift ('>' < '+').
+    Conflict between rule 71 and token '*' resolved as shift ('>' < '*').
+    Conflict between rule 71 and token '/' resolved as shift ('>' < '/').
+    Conflict between rule 71 and token '%' resolved as shift ('>' < '%').
+
+
+State 122
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   58     | expr '-' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', ';', ')', ',', ']']
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 58 (expr)
+
+    Conflict between rule 58 and token KW_AND resolved as reduce (KW_AND < '-').
+    Conflict between rule 58 and token KW_OR resolved as reduce (KW_OR < '-').
+    Conflict between rule 58 and token TK_POWER resolved as shift ('-' < TK_POWER).
+    Conflict between rule 58 and token TK_EQUAL resolved as reduce (TK_EQUAL < '-').
+    Conflict between rule 58 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < '-').
+    Conflict between rule 58 and token TK_LESS resolved as reduce (TK_LESS < '-').
+    Conflict between rule 58 and token TK_MORE resolved as reduce (TK_MORE < '-').
+    Conflict between rule 58 and token '<' resolved as reduce ('<' < '-').
+    Conflict between rule 58 and token '>' resolved as reduce ('>' < '-').
+    Conflict between rule 58 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 58 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 58 and token '*' resolved as shift ('-' < '*').
+    Conflict between rule 58 and token '/' resolved as shift ('-' < '/').
+    Conflict between rule 58 and token '%' resolved as shift ('-' < '%').
+
+
+State 123
+
+   57 expr: expr . '+' expr
+   57     | expr '+' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', ';', ')', ',', ']']
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+    '*'       shift, and go to state 82
+    '/'       shift, and go to state 83
+    '%'       shift, and go to state 84
+
+    $default  reduce using rule 57 (expr)
+
+    Conflict between rule 57 and token KW_AND resolved as reduce (KW_AND < '+').
+    Conflict between rule 57 and token KW_OR resolved as reduce (KW_OR < '+').
+    Conflict between rule 57 and token TK_POWER resolved as shift ('+' < TK_POWER).
+    Conflict between rule 57 and token TK_EQUAL resolved as reduce (TK_EQUAL < '+').
+    Conflict between rule 57 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < '+').
+    Conflict between rule 57 and token TK_LESS resolved as reduce (TK_LESS < '+').
+    Conflict between rule 57 and token TK_MORE resolved as reduce (TK_MORE < '+').
+    Conflict between rule 57 and token '<' resolved as reduce ('<' < '+').
+    Conflict between rule 57 and token '>' resolved as reduce ('>' < '+').
+    Conflict between rule 57 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 57 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 57 and token '*' resolved as shift ('+' < '*').
+    Conflict between rule 57 and token '/' resolved as shift ('+' < '/').
+    Conflict between rule 57 and token '%' resolved as shift ('+' < '%').
+
+
+State 124
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   59     | expr '*' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', '*', '/', '%', ';', ')', ',', ']']
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+
+    $default  reduce using rule 59 (expr)
+
+    Conflict between rule 59 and token KW_AND resolved as reduce (KW_AND < '*').
+    Conflict between rule 59 and token KW_OR resolved as reduce (KW_OR < '*').
+    Conflict between rule 59 and token TK_POWER resolved as shift ('*' < TK_POWER).
+    Conflict between rule 59 and token TK_EQUAL resolved as reduce (TK_EQUAL < '*').
+    Conflict between rule 59 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < '*').
+    Conflict between rule 59 and token TK_LESS resolved as reduce (TK_LESS < '*').
+    Conflict between rule 59 and token TK_MORE resolved as reduce (TK_MORE < '*').
+    Conflict between rule 59 and token '<' resolved as reduce ('<' < '*').
+    Conflict between rule 59 and token '>' resolved as reduce ('>' < '*').
+    Conflict between rule 59 and token '-' resolved as reduce ('-' < '*').
+    Conflict between rule 59 and token '+' resolved as reduce ('+' < '*').
+    Conflict between rule 59 and token '*' resolved as reduce (%left '*').
+    Conflict between rule 59 and token '/' resolved as reduce (%left '/').
+    Conflict between rule 59 and token '%' resolved as reduce (%left '%').
+
+
+State 125
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   60     | expr '/' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', '*', '/', '%', ';', ')', ',', ']']
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+
+    $default  reduce using rule 60 (expr)
+
+    Conflict between rule 60 and token KW_AND resolved as reduce (KW_AND < '/').
+    Conflict between rule 60 and token KW_OR resolved as reduce (KW_OR < '/').
+    Conflict between rule 60 and token TK_POWER resolved as shift ('/' < TK_POWER).
+    Conflict between rule 60 and token TK_EQUAL resolved as reduce (TK_EQUAL < '/').
+    Conflict between rule 60 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < '/').
+    Conflict between rule 60 and token TK_LESS resolved as reduce (TK_LESS < '/').
+    Conflict between rule 60 and token TK_MORE resolved as reduce (TK_MORE < '/').
+    Conflict between rule 60 and token '<' resolved as reduce ('<' < '/').
+    Conflict between rule 60 and token '>' resolved as reduce ('>' < '/').
+    Conflict between rule 60 and token '-' resolved as reduce ('-' < '/').
+    Conflict between rule 60 and token '+' resolved as reduce ('+' < '/').
+    Conflict between rule 60 and token '*' resolved as reduce (%left '*').
+    Conflict between rule 60 and token '/' resolved as reduce (%left '/').
+    Conflict between rule 60 and token '%' resolved as reduce (%left '%').
+
+
+State 126
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   61     | expr '%' expr .  [KW_INT, KW_REAL, KW_AND, KW_STRING, KW_OR, KW_BOOL, TK_EQUAL, TK_NOTEQUAL, TK_LESS, TK_MORE, '<', '>', '-', '+', '*', '/', '%', ';', ')', ',', ']']
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    TK_POWER  shift, and go to state 73
+
+    $default  reduce using rule 61 (expr)
+
+    Conflict between rule 61 and token KW_AND resolved as reduce (KW_AND < '%').
+    Conflict between rule 61 and token KW_OR resolved as reduce (KW_OR < '%').
+    Conflict between rule 61 and token TK_POWER resolved as shift ('%' < TK_POWER).
+    Conflict between rule 61 and token TK_EQUAL resolved as reduce (TK_EQUAL < '%').
+    Conflict between rule 61 and token TK_NOTEQUAL resolved as reduce (TK_NOTEQUAL < '%').
+    Conflict between rule 61 and token TK_LESS resolved as reduce (TK_LESS < '%').
+    Conflict between rule 61 and token TK_MORE resolved as reduce (TK_MORE < '%').
+    Conflict between rule 61 and token '<' resolved as reduce ('<' < '%').
+    Conflict between rule 61 and token '>' resolved as reduce ('>' < '%').
+    Conflict between rule 61 and token '-' resolved as reduce ('-' < '%').
+    Conflict between rule 61 and token '+' resolved as reduce ('+' < '%').
+    Conflict between rule 61 and token '*' resolved as reduce (%left '*').
+    Conflict between rule 61 and token '/' resolved as reduce (%left '/').
+    Conflict between rule 61 and token '%' resolved as reduce (%left '%').
+
+
+State 127
+
+   18 declarations: declarations ',' TK_ID '=' KW_FALSE .
+
+    $default  reduce using rule 18 (declarations)
+
+
+State 128
+
+   16 declarations: declarations ',' TK_ID '=' KW_TRUE .
+
+    $default  reduce using rule 16 (declarations)
+
+
+State 129
+
+   14 declarations: declarations ',' TK_ID '=' expr .  [KW_INT, KW_REAL, KW_STRING, KW_BOOL, ',']
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+
+    $default  reduce using rule 14 (declarations)
+
+
+State 130
+
+   21 declarations: declarations ',' TK_ID '[' expr . ']'
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ']'          shift, and go to state 167
+
+
+State 131
+
+   26 arrays_func: '[' ']' . KW_INT
+   27            | '[' ']' . KW_BOOL
+   28            | '[' ']' . KW_REAL
+   29            | '[' ']' . KW_STRING
+
+    KW_INT     shift, and go to state 168
+    KW_REAL    shift, and go to state 169
+    KW_STRING  shift, and go to state 170
+    KW_BOOL    shift, and go to state 171
+
+
+State 132
+
+   30 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_INT . func_body
+   46 func_body: . '{' code_body '}'
+
+    '{'  shift, and go to state 96
+
+    func_body  go to state 172
+
+
+State 133
+
+   32 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_REAL . func_body
+   46 func_body: . '{' code_body '}'
+
+    '{'  shift, and go to state 96
+
+    func_body  go to state 173
+
+
+State 134
+
+   33 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_STRING . func_body
+   46 func_body: . '{' code_body '}'
+
+    '{'  shift, and go to state 96
+
+    func_body  go to state 174
+
+
+State 135
+
+   31 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_BOOL . func_body
+   46 func_body: . '{' code_body '}'
+
+    '{'  shift, and go to state 96
+
+    func_body  go to state 175
+
+
+State 136
+
+   26 arrays_func: '[' . ']' KW_INT
+   27            | '[' . ']' KW_BOOL
+   28            | '[' . ']' KW_REAL
+   29            | '[' . ']' KW_STRING
+
+    ']'  shift, and go to state 131
+
+
+State 137
+
+   34 func_declaration: KW_FUNC TK_ID '(' func_args ')' arrays_func . func_body
+   46 func_body: . '{' code_body '}'
+
+    '{'  shift, and go to state 96
+
+    func_body  go to state 176
+
+
+State 138
+
+   35 func_declaration: KW_FUNC TK_ID '(' func_args ')' func_body .
+
+    $default  reduce using rule 35 (func_declaration)
+
+
+State 139
+
+   37 func_args: func_args ',' arg_decl .
+
+    $default  reduce using rule 37 (func_args)
+
+
+State 140
+
+   84 assignment: TK_ID . '=' expr ';'
+   86           | TK_ID . '=' KW_FALSE ';'
+   87           | TK_ID . '=' KW_TRUE ';'
+   88 array_assignment: TK_ID . '[' expr ']'
+  103 function_call: TK_ID . '(' func_args ')'
+
+    '('  shift, and go to state 59
+    '='  shift, and go to state 177
+    '['  shift, and go to state 60
+
+
+State 141
+
+   97 for_statements: KW_FOR . '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+
+    '('  shift, and go to state 178
+
+
+State 142
+
+   99 while_statements: KW_WHILE . '(' expr ')' statements_body
+
+    '('  shift, and go to state 179
+
+
+State 143
+
+   80 statements: KW_BREAK . ';'
+
+    ';'  shift, and go to state 180
+
+
+State 144
+
+   89 if_statements: KW_IF . '(' expr ')' statements_body
+   90              | KW_IF . '(' expr ')' statements_body KW_ELSE statements_body
+
+    '('  shift, and go to state 181
+
+
+State 145
+
+   81 statements: KW_CONTINUE . ';'
+
+    ';'  shift, and go to state 182
+
+
+State 146
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+  101 return_stmt: KW_RETURN .  [';']
+  102            | KW_RETURN . expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    $default  reduce using rule 101 (return_stmt)
+
+    expr              go to state 183
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 147
+
+   49 code: var_declaration . ';'
+
+    ';'  shift, and go to state 184
+
+
+State 148
+
+   50 code: const_declaration . ';'
+
+    ';'  shift, and go to state 185
+
+
+State 149
+
+    7 var_declaration: . KW_VAR declarations KW_INT
+    8                | . KW_VAR declarations KW_REAL
+    9                | . KW_VAR declarations KW_STRING
+   10                | . KW_VAR declarations KW_BOOL
+   22 const_declaration: . KW_CONST declarations KW_INT
+   23                  | . KW_CONST declarations KW_REAL
+   24                  | . KW_CONST declarations KW_STRING
+   25                  | . KW_CONST declarations KW_BOOL
+   46 func_body: '{' code_body . '}'
+   48 code_body: code_body . code
+   49 code: . var_declaration ';'
+   50     | . const_declaration ';'
+   51     | . statements
+   76 statements: . assignment
+   77           | . if_statements
+   78           | . for_statements
+   79           | . while_statements
+   80           | . KW_BREAK ';'
+   81           | . KW_CONTINUE ';'
+   82           | . return_stmt ';'
+   83           | . function_call ';'
+   84 assignment: . TK_ID '=' expr ';'
+   85           | . array_assignment '=' expr ';'
+   86           | . TK_ID '=' KW_FALSE ';'
+   87           | . TK_ID '=' KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: . KW_IF '(' expr ')' statements_body
+   90              | . KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+   97 for_statements: . KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+   99 while_statements: . KW_WHILE '(' expr ')' statements_body
+  100 return_stmt: . %empty  [';']
+  101            | . KW_RETURN
+  102            | . KW_RETURN expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID        shift, and go to state 140
+    KW_FOR       shift, and go to state 141
+    KW_VAR       shift, and go to state 3
+    KW_WHILE     shift, and go to state 142
+    KW_CONST     shift, and go to state 4
+    KW_BREAK     shift, and go to state 143
+    KW_IF        shift, and go to state 144
+    KW_CONTINUE  shift, and go to state 145
+    KW_RETURN    shift, and go to state 146
+    TK_WRTSTR    shift, and go to state 38
+    TK_WRTINT    shift, and go to state 39
+    TK_WRTREAL   shift, and go to state 40
+    TK_RDSTR     shift, and go to state 41
+    TK_RDINT     shift, and go to state 42
+    TK_RDREAL    shift, and go to state 43
+    '}'          shift, and go to state 186
+
+    $default  reduce using rule 100 (return_stmt)
+
+    var_declaration    go to state 147
+    const_declaration  go to state 148
+    code               go to state 187
+    statements         go to state 151
+    assignment         go to state 152
+    array_assignment   go to state 153
+    if_statements      go to state 154
+    for_statements     go to state 155
+    while_statements   go to state 156
+    return_stmt        go to state 157
+    function_call      go to state 158
+    pi_functions       go to state 50
+
+
+State 150
+
+   47 code_body: code .
+
+    $default  reduce using rule 47 (code_body)
+
+
+State 151
+
+   51 code: statements .
+
+    $default  reduce using rule 51 (code)
+
+
+State 152
+
+   76 statements: assignment .
+
+    $default  reduce using rule 76 (statements)
+
+
+State 153
+
+   85 assignment: array_assignment . '=' expr ';'
+
+    '='  shift, and go to state 188
+
+
+State 154
+
+   77 statements: if_statements .
+
+    $default  reduce using rule 77 (statements)
+
+
+State 155
+
+   78 statements: for_statements .
+
+    $default  reduce using rule 78 (statements)
+
+
+State 156
+
+   79 statements: while_statements .
+
+    $default  reduce using rule 79 (statements)
+
+
+State 157
+
+   82 statements: return_stmt . ';'
+
+    ';'  shift, and go to state 189
+
+
+State 158
+
+   83 statements: function_call . ';'
+
+    ';'  shift, and go to state 190
+
+
+State 159
+
+  103 function_call: TK_ID '(' func_args ')' .
+
+    $default  reduce using rule 103 (function_call)
+
+
+State 160
+
+   88 array_assignment: TK_ID '[' expr ']' .
+
+    $default  reduce using rule 88 (array_assignment)
+
+
+State 161
+
+  109 pi_functions: TK_WRTSTR '(' TK_ID ')' .
+
+    $default  reduce using rule 109 (pi_functions)
+
+
+State 162
+
+  110 pi_functions: TK_WRTSTR '(' TK_STRING ')' .
+
+    $default  reduce using rule 110 (pi_functions)
+
+
+State 163
+
+  112 pi_functions: TK_WRTINT '(' TK_ID ')' .
+
+    $default  reduce using rule 112 (pi_functions)
+
+
+State 164
+
+  113 pi_functions: TK_WRTINT '(' TK_INT ')' .
+
+    $default  reduce using rule 113 (pi_functions)
+
+
+State 165
+
+  115 pi_functions: TK_WRTREAL '(' TK_ID ')' .
+
+    $default  reduce using rule 115 (pi_functions)
+
+
+State 166
+
+  116 pi_functions: TK_WRTREAL '(' TK_FLOAT ')' .
+
+    $default  reduce using rule 116 (pi_functions)
+
+
+State 167
+
+   21 declarations: declarations ',' TK_ID '[' expr ']' .
+
+    $default  reduce using rule 21 (declarations)
+
+
+State 168
+
+   26 arrays_func: '[' ']' KW_INT .
+
+    $default  reduce using rule 26 (arrays_func)
+
+
+State 169
+
+   28 arrays_func: '[' ']' KW_REAL .
+
+    $default  reduce using rule 28 (arrays_func)
+
+
+State 170
+
+   29 arrays_func: '[' ']' KW_STRING .
+
+    $default  reduce using rule 29 (arrays_func)
+
+
+State 171
+
+   27 arrays_func: '[' ']' KW_BOOL .
+
+    $default  reduce using rule 27 (arrays_func)
+
+
+State 172
+
+   30 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_INT func_body .
+
+    $default  reduce using rule 30 (func_declaration)
+
+
+State 173
+
+   32 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_REAL func_body .
+
+    $default  reduce using rule 32 (func_declaration)
+
+
+State 174
+
+   33 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_STRING func_body .
+
+    $default  reduce using rule 33 (func_declaration)
+
+
+State 175
+
+   31 func_declaration: KW_FUNC TK_ID '(' func_args ')' KW_BOOL func_body .
+
+    $default  reduce using rule 31 (func_declaration)
+
+
+State 176
+
+   34 func_declaration: KW_FUNC TK_ID '(' func_args ')' arrays_func func_body .
+
+    $default  reduce using rule 34 (func_declaration)
+
+
+State 177
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   84 assignment: TK_ID '=' . expr ';'
+   86           | TK_ID '=' . KW_FALSE ';'
+   87           | TK_ID '=' . KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_FALSE    shift, and go to state 191
+    KW_NOT      shift, and go to state 36
+    KW_TRUE     shift, and go to state 192
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 193
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 178
+
+   97 for_statements: KW_FOR '(' . for_assignment ';' expr ';' for_assignment ')' statements_body
+   98 for_assignment: . TK_ID '=' expr
+
+    TK_ID  shift, and go to state 194
+
+    for_assignment  go to state 195
+
+
+State 179
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+   99 while_statements: KW_WHILE '(' . expr ')' statements_body
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 196
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 180
+
+   80 statements: KW_BREAK ';' .
+
+    $default  reduce using rule 80 (statements)
+
+
+State 181
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: KW_IF '(' . expr ')' statements_body
+   90              | KW_IF '(' . expr ')' statements_body KW_ELSE statements_body
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 197
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 182
+
+   81 statements: KW_CONTINUE ';' .
+
+    $default  reduce using rule 81 (statements)
+
+
+State 183
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+  102 return_stmt: KW_RETURN expr .  [';']
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+
+    $default  reduce using rule 102 (return_stmt)
+
+
+State 184
+
+   49 code: var_declaration ';' .
+
+    $default  reduce using rule 49 (code)
+
+
+State 185
+
+   50 code: const_declaration ';' .
+
+    $default  reduce using rule 50 (code)
+
+
+State 186
+
+   46 func_body: '{' code_body '}' .
+
+    $default  reduce using rule 46 (func_body)
+
+
+State 187
+
+   48 code_body: code_body code .
+
+    $default  reduce using rule 48 (code_body)
+
+
+State 188
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   85 assignment: array_assignment '=' . expr ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 198
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 189
+
+   82 statements: return_stmt ';' .
+
+    $default  reduce using rule 82 (statements)
+
+
+State 190
+
+   83 statements: function_call ';' .
+
+    $default  reduce using rule 83 (statements)
+
+
+State 191
+
+   86 assignment: TK_ID '=' KW_FALSE . ';'
+
+    ';'  shift, and go to state 199
+
+
+State 192
+
+   87 assignment: TK_ID '=' KW_TRUE . ';'
+
+    ';'  shift, and go to state 200
+
+
+State 193
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+   84 assignment: TK_ID '=' expr . ';'
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ';'          shift, and go to state 201
+
+
+State 194
+
+   98 for_assignment: TK_ID . '=' expr
+
+    '='  shift, and go to state 202
+
+
+State 195
+
+   97 for_statements: KW_FOR '(' for_assignment . ';' expr ';' for_assignment ')' statements_body
+
+    ';'  shift, and go to state 203
+
+
+State 196
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+   99 while_statements: KW_WHILE '(' expr . ')' statements_body
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ')'          shift, and go to state 204
+
+
+State 197
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+   89 if_statements: KW_IF '(' expr . ')' statements_body
+   90              | KW_IF '(' expr . ')' statements_body KW_ELSE statements_body
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ')'          shift, and go to state 205
+
+
+State 198
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+   85 assignment: array_assignment '=' expr . ';'
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ';'          shift, and go to state 206
+
+
+State 199
+
+   86 assignment: TK_ID '=' KW_FALSE ';' .
+
+    $default  reduce using rule 86 (assignment)
+
+
+State 200
+
+   87 assignment: TK_ID '=' KW_TRUE ';' .
+
+    $default  reduce using rule 87 (assignment)
+
+
+State 201
+
+   84 assignment: TK_ID '=' expr ';' .
+
+    $default  reduce using rule 84 (assignment)
+
+
+State 202
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+   98 for_assignment: TK_ID '=' . expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 207
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 203
+
+   52 expr: . TK_ID
+   53     | . TK_INT
+   54     | . TK_FLOAT
+   55     | . TK_STRING
+   56     | . '(' expr ')'
+   57     | . expr '+' expr
+   58     | . expr '-' expr
+   59     | . expr '*' expr
+   60     | . expr '/' expr
+   61     | . expr '%' expr
+   62     | . KW_NOT expr
+   63     | . expr KW_AND expr
+   64     | . expr KW_OR expr
+   65     | . expr TK_POWER expr
+   66     | . '+' expr
+   67     | . '-' expr
+   68     | . expr TK_EQUAL expr
+   69     | . expr TK_LESS expr
+   70     | . expr '<' expr
+   71     | . expr '>' expr
+   72     | . expr TK_MORE expr
+   73     | . expr TK_NOTEQUAL expr
+   74     | . function_call
+   75     | . array_assignment
+   88 array_assignment: . TK_ID '[' expr ']'
+   97 for_statements: KW_FOR '(' for_assignment ';' . expr ';' for_assignment ')' statements_body
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID       shift, and go to state 31
+    TK_INT      shift, and go to state 32
+    TK_FLOAT    shift, and go to state 33
+    TK_STRING   shift, and go to state 34
+    KW_NOT      shift, and go to state 36
+    TK_WRTSTR   shift, and go to state 38
+    TK_WRTINT   shift, and go to state 39
+    TK_WRTREAL  shift, and go to state 40
+    TK_RDSTR    shift, and go to state 41
+    TK_RDINT    shift, and go to state 42
+    TK_RDREAL   shift, and go to state 43
+    '-'         shift, and go to state 44
+    '+'         shift, and go to state 45
+    '('         shift, and go to state 46
+
+    expr              go to state 208
+    array_assignment  go to state 48
+    function_call     go to state 49
+    pi_functions      go to state 50
+
+
+State 204
+
+   76 statements: . assignment
+   77           | . if_statements
+   78           | . for_statements
+   79           | . while_statements
+   80           | . KW_BREAK ';'
+   81           | . KW_CONTINUE ';'
+   82           | . return_stmt ';'
+   83           | . function_call ';'
+   84 assignment: . TK_ID '=' expr ';'
+   85           | . array_assignment '=' expr ';'
+   86           | . TK_ID '=' KW_FALSE ';'
+   87           | . TK_ID '=' KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: . KW_IF '(' expr ')' statements_body
+   90              | . KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+   91 statements_body: . statements
+   92                | . '{' statements_code '}' ';'
+   97 for_statements: . KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+   99 while_statements: . KW_WHILE '(' expr ')' statements_body
+   99                 | KW_WHILE '(' expr ')' . statements_body
+  100 return_stmt: . %empty  [';']
+  101            | . KW_RETURN
+  102            | . KW_RETURN expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID        shift, and go to state 140
+    KW_FOR       shift, and go to state 141
+    KW_WHILE     shift, and go to state 142
+    KW_BREAK     shift, and go to state 143
+    KW_IF        shift, and go to state 144
+    KW_CONTINUE  shift, and go to state 145
+    KW_RETURN    shift, and go to state 146
+    TK_WRTSTR    shift, and go to state 38
+    TK_WRTINT    shift, and go to state 39
+    TK_WRTREAL   shift, and go to state 40
+    TK_RDSTR     shift, and go to state 41
+    TK_RDINT     shift, and go to state 42
+    TK_RDREAL    shift, and go to state 43
+    '{'          shift, and go to state 209
+
+    $default  reduce using rule 100 (return_stmt)
+
+    statements        go to state 210
+    assignment        go to state 152
+    array_assignment  go to state 153
+    if_statements     go to state 154
+    statements_body   go to state 211
+    for_statements    go to state 155
+    while_statements  go to state 156
+    return_stmt       go to state 157
+    function_call     go to state 158
+    pi_functions      go to state 50
+
+
+State 205
+
+   76 statements: . assignment
+   77           | . if_statements
+   78           | . for_statements
+   79           | . while_statements
+   80           | . KW_BREAK ';'
+   81           | . KW_CONTINUE ';'
+   82           | . return_stmt ';'
+   83           | . function_call ';'
+   84 assignment: . TK_ID '=' expr ';'
+   85           | . array_assignment '=' expr ';'
+   86           | . TK_ID '=' KW_FALSE ';'
+   87           | . TK_ID '=' KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: . KW_IF '(' expr ')' statements_body
+   89              | KW_IF '(' expr ')' . statements_body
+   90              | . KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+   90              | KW_IF '(' expr ')' . statements_body KW_ELSE statements_body
+   91 statements_body: . statements
+   92                | . '{' statements_code '}' ';'
+   97 for_statements: . KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+   99 while_statements: . KW_WHILE '(' expr ')' statements_body
+  100 return_stmt: . %empty  [';']
+  101            | . KW_RETURN
+  102            | . KW_RETURN expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID        shift, and go to state 140
+    KW_FOR       shift, and go to state 141
+    KW_WHILE     shift, and go to state 142
+    KW_BREAK     shift, and go to state 143
+    KW_IF        shift, and go to state 144
+    KW_CONTINUE  shift, and go to state 145
+    KW_RETURN    shift, and go to state 146
+    TK_WRTSTR    shift, and go to state 38
+    TK_WRTINT    shift, and go to state 39
+    TK_WRTREAL   shift, and go to state 40
+    TK_RDSTR     shift, and go to state 41
+    TK_RDINT     shift, and go to state 42
+    TK_RDREAL    shift, and go to state 43
+    '{'          shift, and go to state 209
+
+    $default  reduce using rule 100 (return_stmt)
+
+    statements        go to state 210
+    assignment        go to state 152
+    array_assignment  go to state 153
+    if_statements     go to state 154
+    statements_body   go to state 212
+    for_statements    go to state 155
+    while_statements  go to state 156
+    return_stmt       go to state 157
+    function_call     go to state 158
+    pi_functions      go to state 50
+
+
+State 206
+
+   85 assignment: array_assignment '=' expr ';' .
+
+    $default  reduce using rule 85 (assignment)
+
+
+State 207
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+   98 for_assignment: TK_ID '=' expr .  [';', ')']
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+
+    $default  reduce using rule 98 (for_assignment)
+
+
+State 208
+
+   57 expr: expr . '+' expr
+   58     | expr . '-' expr
+   59     | expr . '*' expr
+   60     | expr . '/' expr
+   61     | expr . '%' expr
+   63     | expr . KW_AND expr
+   64     | expr . KW_OR expr
+   65     | expr . TK_POWER expr
+   68     | expr . TK_EQUAL expr
+   69     | expr . TK_LESS expr
+   70     | expr . '<' expr
+   71     | expr . '>' expr
+   72     | expr . TK_MORE expr
+   73     | expr . TK_NOTEQUAL expr
+   97 for_statements: KW_FOR '(' for_assignment ';' expr . ';' for_assignment ')' statements_body
+
+    KW_AND       shift, and go to state 71
+    KW_OR        shift, and go to state 72
+    TK_POWER     shift, and go to state 73
+    TK_EQUAL     shift, and go to state 74
+    TK_NOTEQUAL  shift, and go to state 75
+    TK_LESS      shift, and go to state 76
+    TK_MORE      shift, and go to state 77
+    '<'          shift, and go to state 78
+    '>'          shift, and go to state 79
+    '-'          shift, and go to state 80
+    '+'          shift, and go to state 81
+    '*'          shift, and go to state 82
+    '/'          shift, and go to state 83
+    '%'          shift, and go to state 84
+    ';'          shift, and go to state 213
+
+
+State 209
+
+   76 statements: . assignment
+   77           | . if_statements
+   78           | . for_statements
+   79           | . while_statements
+   80           | . KW_BREAK ';'
+   81           | . KW_CONTINUE ';'
+   82           | . return_stmt ';'
+   83           | . function_call ';'
+   84 assignment: . TK_ID '=' expr ';'
+   85           | . array_assignment '=' expr ';'
+   86           | . TK_ID '=' KW_FALSE ';'
+   87           | . TK_ID '=' KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: . KW_IF '(' expr ')' statements_body
+   90              | . KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+   92 statements_body: '{' . statements_code '}' ';'
+   93 statements_code: . %empty  ['}']
+   94                | . stmt_code
+   95 stmt_code: . statements
+   96          | . stmt_code statements
+   97 for_statements: . KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+   99 while_statements: . KW_WHILE '(' expr ')' statements_body
+  100 return_stmt: . %empty  [';']
+  101            | . KW_RETURN
+  102            | . KW_RETURN expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID        shift, and go to state 140
+    KW_FOR       shift, and go to state 141
+    KW_WHILE     shift, and go to state 142
+    KW_BREAK     shift, and go to state 143
+    KW_IF        shift, and go to state 144
+    KW_CONTINUE  shift, and go to state 145
+    KW_RETURN    shift, and go to state 146
+    TK_WRTSTR    shift, and go to state 38
+    TK_WRTINT    shift, and go to state 39
+    TK_WRTREAL   shift, and go to state 40
+    TK_RDSTR     shift, and go to state 41
+    TK_RDINT     shift, and go to state 42
+    TK_RDREAL    shift, and go to state 43
+
+    ';'       reduce using rule 100 (return_stmt)
+    $default  reduce using rule 93 (statements_code)
+
+    statements        go to state 214
+    assignment        go to state 152
+    array_assignment  go to state 153
+    if_statements     go to state 154
+    statements_code   go to state 215
+    stmt_code         go to state 216
+    for_statements    go to state 155
+    while_statements  go to state 156
+    return_stmt       go to state 157
+    function_call     go to state 158
+    pi_functions      go to state 50
+
+
+State 210
+
+   91 statements_body: statements .
+
+    $default  reduce using rule 91 (statements_body)
+
+
+State 211
+
+   99 while_statements: KW_WHILE '(' expr ')' statements_body .
+
+    $default  reduce using rule 99 (while_statements)
+
+
+State 212
+
+   89 if_statements: KW_IF '(' expr ')' statements_body .  [TK_ID, KW_FOR, KW_VAR, KW_WHILE, KW_CONST, KW_BREAK, KW_IF, KW_CONTINUE, KW_ELSE, KW_RETURN, TK_WRTSTR, TK_WRTINT, TK_WRTREAL, TK_RDSTR, TK_RDINT, TK_RDREAL, ';', '}']
+   90              | KW_IF '(' expr ')' statements_body . KW_ELSE statements_body
+
+    KW_ELSE  shift, and go to state 217
+
+    KW_ELSE   [reduce using rule 89 (if_statements)]
+    $default  reduce using rule 89 (if_statements)
+
+
+State 213
+
+   97 for_statements: KW_FOR '(' for_assignment ';' expr ';' . for_assignment ')' statements_body
+   98 for_assignment: . TK_ID '=' expr
+
+    TK_ID  shift, and go to state 194
+
+    for_assignment  go to state 218
+
+
+State 214
+
+   95 stmt_code: statements .
+
+    $default  reduce using rule 95 (stmt_code)
+
+
+State 215
+
+   92 statements_body: '{' statements_code . '}' ';'
+
+    '}'  shift, and go to state 219
+
+
+State 216
+
+   76 statements: . assignment
+   77           | . if_statements
+   78           | . for_statements
+   79           | . while_statements
+   80           | . KW_BREAK ';'
+   81           | . KW_CONTINUE ';'
+   82           | . return_stmt ';'
+   83           | . function_call ';'
+   84 assignment: . TK_ID '=' expr ';'
+   85           | . array_assignment '=' expr ';'
+   86           | . TK_ID '=' KW_FALSE ';'
+   87           | . TK_ID '=' KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: . KW_IF '(' expr ')' statements_body
+   90              | . KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+   94 statements_code: stmt_code .  ['}']
+   96 stmt_code: stmt_code . statements
+   97 for_statements: . KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+   99 while_statements: . KW_WHILE '(' expr ')' statements_body
+  100 return_stmt: . %empty  [';']
+  101            | . KW_RETURN
+  102            | . KW_RETURN expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID        shift, and go to state 140
+    KW_FOR       shift, and go to state 141
+    KW_WHILE     shift, and go to state 142
+    KW_BREAK     shift, and go to state 143
+    KW_IF        shift, and go to state 144
+    KW_CONTINUE  shift, and go to state 145
+    KW_RETURN    shift, and go to state 146
+    TK_WRTSTR    shift, and go to state 38
+    TK_WRTINT    shift, and go to state 39
+    TK_WRTREAL   shift, and go to state 40
+    TK_RDSTR     shift, and go to state 41
+    TK_RDINT     shift, and go to state 42
+    TK_RDREAL    shift, and go to state 43
+
+    ';'       reduce using rule 100 (return_stmt)
+    $default  reduce using rule 94 (statements_code)
+
+    statements        go to state 220
+    assignment        go to state 152
+    array_assignment  go to state 153
+    if_statements     go to state 154
+    for_statements    go to state 155
+    while_statements  go to state 156
+    return_stmt       go to state 157
+    function_call     go to state 158
+    pi_functions      go to state 50
+
+
+State 217
+
+   76 statements: . assignment
+   77           | . if_statements
+   78           | . for_statements
+   79           | . while_statements
+   80           | . KW_BREAK ';'
+   81           | . KW_CONTINUE ';'
+   82           | . return_stmt ';'
+   83           | . function_call ';'
+   84 assignment: . TK_ID '=' expr ';'
+   85           | . array_assignment '=' expr ';'
+   86           | . TK_ID '=' KW_FALSE ';'
+   87           | . TK_ID '=' KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: . KW_IF '(' expr ')' statements_body
+   90              | . KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+   90              | KW_IF '(' expr ')' statements_body KW_ELSE . statements_body
+   91 statements_body: . statements
+   92                | . '{' statements_code '}' ';'
+   97 for_statements: . KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+   99 while_statements: . KW_WHILE '(' expr ')' statements_body
+  100 return_stmt: . %empty  [';']
+  101            | . KW_RETURN
+  102            | . KW_RETURN expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID        shift, and go to state 140
+    KW_FOR       shift, and go to state 141
+    KW_WHILE     shift, and go to state 142
+    KW_BREAK     shift, and go to state 143
+    KW_IF        shift, and go to state 144
+    KW_CONTINUE  shift, and go to state 145
+    KW_RETURN    shift, and go to state 146
+    TK_WRTSTR    shift, and go to state 38
+    TK_WRTINT    shift, and go to state 39
+    TK_WRTREAL   shift, and go to state 40
+    TK_RDSTR     shift, and go to state 41
+    TK_RDINT     shift, and go to state 42
+    TK_RDREAL    shift, and go to state 43
+    '{'          shift, and go to state 209
+
+    $default  reduce using rule 100 (return_stmt)
+
+    statements        go to state 210
+    assignment        go to state 152
+    array_assignment  go to state 153
+    if_statements     go to state 154
+    statements_body   go to state 221
+    for_statements    go to state 155
+    while_statements  go to state 156
+    return_stmt       go to state 157
+    function_call     go to state 158
+    pi_functions      go to state 50
+
+
+State 218
+
+   97 for_statements: KW_FOR '(' for_assignment ';' expr ';' for_assignment . ')' statements_body
+
+    ')'  shift, and go to state 222
+
+
+State 219
+
+   92 statements_body: '{' statements_code '}' . ';'
+
+    ';'  shift, and go to state 223
+
+
+State 220
+
+   96 stmt_code: stmt_code statements .
+
+    $default  reduce using rule 96 (stmt_code)
+
+
+State 221
+
+   90 if_statements: KW_IF '(' expr ')' statements_body KW_ELSE statements_body .
+
+    $default  reduce using rule 90 (if_statements)
+
+
+State 222
+
+   76 statements: . assignment
+   77           | . if_statements
+   78           | . for_statements
+   79           | . while_statements
+   80           | . KW_BREAK ';'
+   81           | . KW_CONTINUE ';'
+   82           | . return_stmt ';'
+   83           | . function_call ';'
+   84 assignment: . TK_ID '=' expr ';'
+   85           | . array_assignment '=' expr ';'
+   86           | . TK_ID '=' KW_FALSE ';'
+   87           | . TK_ID '=' KW_TRUE ';'
+   88 array_assignment: . TK_ID '[' expr ']'
+   89 if_statements: . KW_IF '(' expr ')' statements_body
+   90              | . KW_IF '(' expr ')' statements_body KW_ELSE statements_body
+   91 statements_body: . statements
+   92                | . '{' statements_code '}' ';'
+   97 for_statements: . KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body
+   97               | KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' . statements_body
+   99 while_statements: . KW_WHILE '(' expr ')' statements_body
+  100 return_stmt: . %empty  [';']
+  101            | . KW_RETURN
+  102            | . KW_RETURN expr
+  103 function_call: . TK_ID '(' func_args ')'
+  104              | . pi_functions
+  105 pi_functions: . TK_RDSTR '(' ')'
+  106             | . TK_RDINT '(' ')'
+  107             | . TK_RDREAL '(' ')'
+  108             | . TK_WRTSTR '(' ')'
+  109             | . TK_WRTSTR '(' TK_ID ')'
+  110             | . TK_WRTSTR '(' TK_STRING ')'
+  111             | . TK_WRTINT '(' ')'
+  112             | . TK_WRTINT '(' TK_ID ')'
+  113             | . TK_WRTINT '(' TK_INT ')'
+  114             | . TK_WRTREAL '(' ')'
+  115             | . TK_WRTREAL '(' TK_ID ')'
+  116             | . TK_WRTREAL '(' TK_FLOAT ')'
+
+    TK_ID        shift, and go to state 140
+    KW_FOR       shift, and go to state 141
+    KW_WHILE     shift, and go to state 142
+    KW_BREAK     shift, and go to state 143
+    KW_IF        shift, and go to state 144
+    KW_CONTINUE  shift, and go to state 145
+    KW_RETURN    shift, and go to state 146
+    TK_WRTSTR    shift, and go to state 38
+    TK_WRTINT    shift, and go to state 39
+    TK_WRTREAL   shift, and go to state 40
+    TK_RDSTR     shift, and go to state 41
+    TK_RDINT     shift, and go to state 42
+    TK_RDREAL    shift, and go to state 43
+    '{'          shift, and go to state 209
+
+    $default  reduce using rule 100 (return_stmt)
+
+    statements        go to state 210
+    assignment        go to state 152
+    array_assignment  go to state 153
+    if_statements     go to state 154
+    statements_body   go to state 224
+    for_statements    go to state 155
+    while_statements  go to state 156
+    return_stmt       go to state 157
+    function_call     go to state 158
+    pi_functions      go to state 50
+
+
+State 223
+
+   92 statements_body: '{' statements_code '}' ';' .
+
+    $default  reduce using rule 92 (statements_body)
+
+
+State 224
+
+   97 for_statements: KW_FOR '(' for_assignment ';' expr ';' for_assignment ')' statements_body .
+
+    $default  reduce using rule 97 (for_statements)

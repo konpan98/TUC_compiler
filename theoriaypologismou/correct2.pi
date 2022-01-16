@@ -1,0 +1,45 @@
+var numberOfPeople = 10 int;
+var ages [numberOfPeople ] real;
+
+func check_ages(ages []real, limit int) [] real{
+var tmp real;
+var i int;
+var underaged[numberOfPeople] ,limitaged[numberOfPeople], overaged[numberOfPeople] real;
+for(i = 0; i<limit; i = i + 1){
+
+ tmp = ages[i];
+ if(tmp < limit){
+  writeString("You are underaged");
+  underaged[i] = tmp;
+};
+else if(tmp == limit){
+  writeString("You are on the limit");
+  limitaged[i] = tmp;
+};
+else{
+writeString("You are overaged");
+overaged[i] = tmp; 
+};
+
+};
+return ages;
+};
+
+func begin(){
+var limit,i=0 int;
+var age real;
+var fixed[10] real;
+limit=readInt();
+writeString("Fill the array with ages");
+while(i < numberOfPeople and limit>0){
+
+age=readReal();
+writeString("The age you entered is: ");
+writeReal(age);
+ages[i]=age;
+i = i + 1;
+
+};
+
+fixed = check_ages(ages,limit);
+}

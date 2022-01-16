@@ -1,0 +1,24 @@
+func gcd (a int , b int) int {
+ var i int;
+ for(i = a ; i  >=1 ; i = i - 1){
+  if(a % i ==0 and b % i == 0)
+  break;
+};
+return i;
+};
+
+func begin(){
+ var x,y = -1 int;
+ writeString("GCD program");
+ x=readInt();
+ y=readInt();
+ if(y == x)
+ y=x;
+ else if(x < y)
+ y= gcd(x,y);
+ else
+ y = gcd(y,x);
+ writeString("gcd found");
+ writeInt(y);
+ 
+}
